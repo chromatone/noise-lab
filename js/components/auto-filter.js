@@ -17,7 +17,7 @@ export default {
                 {{type}}
               </button>
 
-            <button class="line-button" @click="playing=!playing">Play</button>
+            <button class="line-button" :class="{active:playing}" @click="playing=!playing">Play</button>
             <sqnob v-model="filter.depth.value" unit="" param="DEP" :step="0.01" :min="0.1" :max="1"></sqnob>
 
             <sqnob v-model="filter.frequency.value" unit="" param="RATE" :step="0.01" :min="0.1" :max="60"></sqnob>

@@ -1,22 +1,20 @@
-import autoPanner from './auto-panner.js'
-import autoFilter from './auto-filter.js'
-import sqnob from './sqnob.js'
+import autoPanner from "./auto-panner.js";
+import autoFilter from "./auto-filter.js";
+import sqnob from "./sqnob.js";
 
 export default {
   template: `
   <div id="noise-generator">
 
-          <div :class="{'is-primary': active}"
-            class="button line-button"
-            @mousedown="playNoise()"
-            @touchstart.stop.prevent="playNoise()"
-            @touchend.stop.prevent="stopNoise()"
-            @touchcancel.stop.prevent="stopNoise()" @mouseup="stopNoise()">NOISE</div>
+      <button :class="{'is-primary': active}"
+        @mousedown="playNoise()"
+        @touchstart.stop.prevent="playNoise()"
+        @touchend.stop.prevent="stopNoise()"
+        @touchcancel.stop.prevent="stopNoise()" @mouseup="stopNoise()">NOISE</button>
 
-
-            <button :class="{active:synth.noise.type==type}" @click="synth.noise.type=type" :key="type" v-for="type in types">
-      				{{type}}
-      			</button>
+        <button :class="{active:synth.noise.type==type}" @click="synth.noise.type=type" :key="type" v-for="type in types">
+  				{{type}}
+  			</button>
 
 
     	   <sqnob v-model="noiseOptions.volume" unit=" dB" param="VOL" :step="1" :min="-32" :max="0"></sqnob>
@@ -36,7 +34,7 @@ export default {
 </div>
 
   `,
-  components:{
+  components: {
     autoFilter,
     autoPanner,
     sqnob
@@ -44,74 +42,72 @@ export default {
   data() {
     return {
       noiseOptions: {
-        noise : {
-          type : 'brown'
+        noise: {
+          type: "brown"
         },
-        envelope : {
-          attack : 0.005 ,
-          decay : 0.1 ,
-          sustain : 0.9,
+        envelope: {
+          attack: 0.005,
+          decay: 0.1,
+          sustain: 0.9,
           release: 1
         },
-        volume:-10
+        volume: -10
       },
-      types:['brown','pink','white'],
-      active:false,
+      types: ["brown", "pink", "white"],
+      active: false,
       synth: new Tone.NoiseSynth(),
       gain: new Tone.Gain().toMaster(),
-      send:{},
-      toMaster:true
-    }
+      send: {},
+      toMaster: true
+    };
   },
   filters: {
     trim(val) {
-      let short = val.slice(0,3)
-      return short.toUpperCase()
+      let short = val.slice(0, 3);
+      return short.toUpperCase();
     }
   },
   methods: {
     playNoise() {
-      if(Tone.context.state=='suspended') {
-        Tone.context.resume()
-      };
+      if (Tone.context.state == "suspended") {
+        Tone.context.resume();
+      }
       this.synth.triggerAttack();
-      this.active=true;
-
+      this.active = true;
     },
     stopNoise() {
       this.synth.triggerRelease();
-      this.active=false;
+      this.active = false;
     }
-	},
-	watch: {
+  },
+  watch: {
     toMaster(val) {
-      if(val) {
+      if (val) {
         this.filter.toMaster();
       } else {
         this.filter.disconnect();
       }
     },
-    'active'(val) {
-      if(val) {
+    active(val) {
+      if (val) {
         this.synth.triggerAttack();
       } else {
-        this.synth.triggerRelease()
+        this.synth.triggerRelease();
       }
     },
-    'noiseOptions.volume'(val) {
-      this.synth.volume.setValueAtTime(val)
+    "noiseOptions.volume"(val) {
+      this.synth.volume.setValueAtTime(val);
     }
-	},
-  created() {
-    this.send=this.synth.send('filter')
   },
-	mounted() {
-    this.synth.set(this.noiseOptions)
-    this.synth.envelope.attackCurve='sine';
-    this.synth.connect(this.gain)
-
-	},
+  created() {
+    this.send = this.synth.send("filter");
+  },
+  mounted() {
+    this.synth.set(this.noiseOptions);
+    this.synth.envelope.attackCurve = "sine";
+    this.synth.connect(this.gain);
+  },
   beforeDestroy() {
     this.synth.triggerRelease();
   }
-}
+};
