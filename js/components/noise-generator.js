@@ -73,7 +73,7 @@ export const noiseGenerator = {
   },
   methods: {
     playNoise() {
-      $root.resume();
+      this.$root.resume();
       if (this.active) {this.stopNoise(); return}
       this.active = true;
       this.synth.triggerAttack();
