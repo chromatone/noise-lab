@@ -1,12 +1,11 @@
-import noiseGenerator from './components/noise-generator.js'
+import * as components from './components/all.js'
+
 
 const ct = new Vue({
   el:"#noise-app",
-  components:{
-    noiseGenerator,
-  },
+  components: {...components},
   data: {
-    channels:{},
+    channels:[],
     params:{
       oscType:'sawtooth',
       tuning:'equal',
@@ -16,6 +15,10 @@ const ct = new Vue({
     },
   },
   methods: {
-
+    resume() {
+      if (Tone.context.state == "suspended") {
+        Tone.context.resume();
+      }
+    }
   }
 })

@@ -4,7 +4,7 @@ A web-app to play with different types of noise sounds and their transformations
 
 Based on [ToneJS](https://tonejs.github.io/)
 
-![screen](screenshot.png)
+Soon will be compatible with [v14](https://tonejs.github.io/docs/14.5.44)
 
 ## Chromatone apps
 
