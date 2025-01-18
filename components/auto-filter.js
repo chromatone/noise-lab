@@ -1,9 +1,9 @@
 import sqnob from './sqnob.js'
 
 export const autoFilter = {
-  title:'Auto filter',
-  name:'auto-filter',
-  components:{
+  title: 'Auto filter',
+  name: 'auto-filter',
+  components: {
     sqnob
   },
   template: `
@@ -32,34 +32,34 @@ export const autoFilter = {
     return {
       filter: new Tone.AutoFilter(),
       gain: new Tone.Gain().toMaster(),
-      types:[
-        {type:'lowpass', name:'LP'},
-        {type:'highpass', name:'HP'},
-        {type:'bandpass', name:'BP'},
+      types: [
+        { type: 'lowpass', name: 'LP' },
+        { type: 'highpass', name: 'HP' },
+        { type: 'bandpass', name: 'BP' },
       ],
-      playing:false,
-      receive:false,
+      playing: false,
+      receive: false,
       options: {
-        frequency : 0.5 ,
-        type : 'sine' ,
-        depth : 0.2 ,
-        baseFrequency : 200 ,
-        octaves : 5 ,
-        filter : {
-          type : 'lowpass' ,
-          rolloff : -48 ,
-          Q : 0
+        frequency: 0.5,
+        type: 'sine',
+        depth: 0.2,
+        baseFrequency: 200,
+        octaves: 5,
+        filter: {
+          type: 'lowpass',
+          rolloff: -48,
+          Q: 0
         }
       }
 
     }
   },
-	watch: {
+  watch: {
     receive(val) {
-      if(val) {
-        this.gain.gain.setValueAtTime(1,0.6)
+      if (val) {
+        this.gain.gain.setValueAtTime(1, 0.6)
       } else {
-        this.gain.gain.setValueAtTime(0,0.6)
+        this.gain.gain.setValueAtTime(0, 0.6)
       }
     },
     playing(val) {
@@ -69,13 +69,13 @@ export const autoFilter = {
         this.filter.stop();
       }
     }
-	},
+  },
   created() {
     this.filter.set(this.options);
     this.filter.receive('filter')
     this.filter.connect(this.gain);
     this.filter.send('panner');
-    this.gain.gain.value=0
+    this.gain.gain.value = 0
   },
 
   beforeDestroy() {
